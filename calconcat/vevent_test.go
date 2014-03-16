@@ -34,30 +34,30 @@ func Test_GetVevents(t *testing.T) {
     go GetVevents(file, channel)
 
     vevent := <-channel
-    if vevent.err != nil {
+    if vevent.Err != nil {
         t.Fatalf("First vevent had an error")
     }
-    if strings.Index(vevent.vevent, "Bastille") == -1 {
+    if strings.Index(vevent.Vevent, "Bastille") == -1 {
         t.Fatalf("First event isnt' Bastille day (got %v)", vevent.vevent)
     }
-    if !checkIsVevent(vevent.vevent) {
+    if !checkIsVevent(vevent.Vevent) {
         t.Fatalf("First event isnt' a VEVENT")
     }
 
     vevent = <-channel
-    if vevent.err != nil {
+    if vevent.Err != nil {
         t.Fatalf("Second vevent had an error")
     }
-    if strings.Index(vevent.vevent, "Networld+Interop") == -1 {
+    if strings.Index(vevent.Vevent, "Networld+Interop") == -1 {
         t.Fatalf("Second event isn't Networld+Interop conference")
     }
-    if !checkIsVevent(vevent.vevent) {
+    if !checkIsVevent(vevent.Vevent) {
         t.Fatalf("Second event isnt' a VEVENT")
     }
 
     select {
     case vevent = <-channel :
-        if vevent.err == nil {
+        if vevent.Err == nil {
             t.Fatalf("Third vevent didn't error")
         }
 

@@ -21,8 +21,8 @@ func (_ NoMoreVevents) Error() string {
 }
 
 type Vevent struct {
-    err error
-    vevent string
+    Err error
+    Vevent string
 }
 
 func GetVevents (stream io.Reader, c chan Vevent) {
@@ -51,5 +51,6 @@ func GetVevents (stream io.Reader, c chan Vevent) {
         c <- Vevent{NoMoreVevents{}, ""}
     }
     c <- Vevent{NoMoreVevents{}, ""}
+
 }
 
