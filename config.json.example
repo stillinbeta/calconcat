@@ -1,0 +1,12 @@
+{
+    "calendars":
+    {
+        "bayarea":
+            [
+                "http://events.stanford.edu/eventlist.ics",
+                "http://events.hackerdojo.com/events.ics"
+            ]
+    },
+    "listen_on": "localhost",
+    "port": 8080
+}
