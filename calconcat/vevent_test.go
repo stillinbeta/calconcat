@@ -7,8 +7,6 @@ import (
     "time"
 )
 
-//import "calconcat/vevent"
-
 const ical_file = "../example.ical"
 
 func checkIsVevent(s string) bool {
