@@ -2,10 +2,15 @@
     "calendars":
     {
         "bayarea":
+        {
+            "calendars":
             [
                 "http://events.stanford.edu/eventlist.ics",
                 "http://events.hackerdojo.com/events.ics"
-            ]
+            ],
+            "tz": "America/Los_Angeles",
+            "title": "Events in the Bay Area"
+        }
     },
     "listen_on": "localhost",
     "port": 8080

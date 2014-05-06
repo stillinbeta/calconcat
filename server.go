@@ -1,18 +1,14 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/stillinbeta/calconcat/calconcat"
 	"log"
 	"net/http"
-	"os"
 )
 
 const (
-	CONFIG_FILE = "config.json"
-	LISTEN_ON   = "localhost"
-	PORT        = 8080
+	CONFIG_FILE = "config.json.example"
 )
 
 func getVevents(url string, c chan calconcat.Vevent) {
@@ -29,7 +25,7 @@ func getVevents(url string, c chan calconcat.Vevent) {
 }
 
 type iCalendarHandler struct {
-	Config *map[string][]string
+	Config *calconcat.CalenderConfigMap
 }
 
 func (ich iCalendarHandler) ServeHTTP(
@@ -46,10 +42,10 @@ func (ich iCalendarHandler) ServeHTTP(
 		return
 	}
 
-	outstanding := len(calList)
+	outstanding := len(calList.CalendarList)
 	c := make(chan calconcat.Vevent, 1)
 
-	for _, url := range calList {
+	for _, url := range calList.CalendarList {
 		go getVevents(url, c)
 	}
 
@@ -67,34 +63,9 @@ func (ich iCalendarHandler) ServeHTTP(
 	}
 }
 
-type configFile struct {
-	Calendars map[string][]string `json:"calendars"`
-	Port      int                 `json:"port"`
-	ListenOn  string              `json:"listen_on"`
-}
-
-func parseConfig() (*configFile, error) {
-	file, err := os.Open(CONFIG_FILE)
-	if err != nil {
-		return nil, err
-	}
-
-	defer file.Close()
-
-	result := new(configFile)
-	decoder := json.NewDecoder(file)
-	err = decoder.Decode(result)
-	if err != nil {
-		log.Printf("Error decoding config file! %v", err)
-		return nil, err
-	}
-
-	return result, nil
-
-}
 
 func main() {
-	config, err := parseConfig()
+	config, err := calconcat.ParseConfig(CONFIG_FILE)
 	if err != nil {
 		log.Fatal("Failed to read config file", err)
 	}
